@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   message: string;
   returnUrl: string;
+  prefil: string;
 
   constructor(private formBuilder: FormBuilder,private router: Router, public authService: AuthService) { }
 
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
     });
     this.returnUrl = '/dashboard';
     this.authService.logout();
+    this.prefil = "admin";
   }
 
   // convenience getter for easy access to form fields
