@@ -1,4 +1,13 @@
 <div class="container">
-    <p>User: admin</p>
-    <button (click)="logout()">Logout</button>
+    <div>
+      <p>User: admin</p>
+      <button (click)="logout()">Logout</button>
+    </div>
+    <div>
+      <ng-container *ngFor="let item of items; let i = index">
+        <ng-container>{{ " " }}</ng-container>
+        <div class="list" (click)='removeItems(i)'>{{ item }}</div>
+      </ng-container>
+    </div>
+    <button (click)="addItems('item' + i)">Add Items</button>
 </div>

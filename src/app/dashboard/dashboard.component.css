@@ -1,0 +1,13 @@
+.list {
+    background-color: white;
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+    text-align: center;
+    padding: 8px;
+    display: inline-block;
+}
+
+.list ul {
+    list-style: none;
+}
