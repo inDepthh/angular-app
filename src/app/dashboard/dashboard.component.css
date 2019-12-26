@@ -20,6 +20,9 @@
 
 .info button {
     float: right;
+    bottom: 32px;
+    right: 5px;
     position: relative;
-    display: inline-block;
+    display: flex;
+
 }

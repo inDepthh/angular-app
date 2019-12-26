@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ContextmenuComponent } from './contextmenu/contextmenu.component';
+import { AdditemComponent } from './additem/additem.component';
 
 
 const appRoutes: Routes = [
@@ -18,7 +20,9 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    ContextmenuComponent,
+    AdditemComponent
   ],
   imports: [
     BrowserModule,

@@ -1,15 +1,23 @@
-<div class="container">
+<div (click)="disableContextMenu()" oncontextmenu="return false;">
+  <div class="container">
     <div class="info">
       <p>User: admin</p>
       <button (click)="logout()">Logout</button>
+      <button (click)="showAddItemDialog()">Add Item</button>
+      <button (click)="removeItems()">Remove Item</button>
       <br><br>
     </div>
     <br><br>
+    <div *ngIf="contextmenu">
+      <app-contextmenu [x]="contextmenuX" [y]="contextmenuY"></app-contextmenu>
+    </div>
     <div>
       <ng-container *ngFor="let item of items; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)'>{{ item }}</div>
+        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event)">{{ item }}</div>
       </ng-container>
     </div>
-    <button (click)="addItems('item' + i)">Add Items</button>
+    <app-additem *ngIf="addItem === true"></app-additem>
 </div>
+</div>
+
