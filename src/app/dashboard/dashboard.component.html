@@ -1,20 +1,37 @@
 <div (click)="disableContextMenu()" oncontextmenu="return false;">
   <div class="container">
     <div class="info">
-      <p>User: admin</p>
-      <button (click)="logout()">Logout</button>
-      <button (click)="showAddItemDialog()">Add Item</button>
-      <button (click)="removeItems()">Remove Item</button>
+      <p><strong>User: admin</strong></p>
+      <button class="btn btn-danger" (click)="logout()">Logout</button>
+      <button class="btn btn-danger" (click)="removeItems()">Remove Item</button>
+      <button class="btn btn-success" (click)="showAddItemDialog()">Add Item</button>
       <br><br>
     </div>
     <br><br>
     <div *ngIf="contextmenu">
-      <app-contextmenu [x]="contextmenuX" [y]="contextmenuY"></app-contextmenu>
+      <app-contextmenu [x]="contextmenuX" [y]="contextmenuY" [index]="index" (messageEvent)="receiveMsgDelete($event)"></app-contextmenu>
     </div>
     <div>
-      <ng-container *ngFor="let item of items; let i = index">
-          <ng-container>{{ " " }}</ng-container>
-          <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event)">{{item}}</div>
+      <Label for="pizza"><strong>Pizzas: </strong></Label>
+      <ng-container name="pizza" *ngFor="let item of pizzas; let i = index">
+        <ng-container>{{ " " }}</ng-container>
+        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event, i)">{{ item }}</div>
+      </ng-container>
+    </div>
+    <br>
+    <div>
+      <Label class="sidesLabel" for="sides"><strong>Sides: </strong></Label>
+      <ng-container name="sides" *ngFor="let item of sides; let i = index">
+        <ng-container>{{ " " }}</ng-container>
+        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event, i)">{{ item }}</div>
+      </ng-container>
+    </div>
+    <br>
+    <div>
+      <Label class="drinksLabel" for="drinks"><strong>Drinks: </strong></Label>
+      <ng-container name="drinks" *ngFor="let item of drinks; let i = index">
+        <ng-container>{{ " " }}</ng-container>
+        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event, i)">{{ item }}</div>
       </ng-container>
     </div>
     <app-additem *ngIf="addItem === true" (messageEvent)="receiveMessage($event)"></app-additem>

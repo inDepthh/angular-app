@@ -2,12 +2,20 @@
     <form>
         <div class="formContainer">
           <label for="product">Product:</label>
-          <input name="product" (keyup)="addName($event)"/>
+          <input type="text" name="product" (keyup)="addName($event.target.value)"/>
           <br>
           <label for="productPrice">Price:</label>
-          <input class="inputCustom" name="productPrice" (keyup)="addPrice($event)"/>
+          <input type="text" class="inputCustom" name="productPrice" (keyup)="addPrice($event.target.value)"/>
           <br>
-          <button class="btn btn-success btn-custom" (click)="sendMessage()" >Add</button>
+          <select ng-model="selectedName" (change)="changeListType($event)">
+            <option value="" disabled>Choose product type</option>
+            <option *ngFor="let itemType of itemTypes" [ngValue]="itemType">{{ itemType }}</option>
+          </select>
+          
+          <div class="btn-container">
+            <button class="btn btn-success btn-custom" (click)="sendMessage()" >Add</button>
+            <button class="btn btn-danger btn-custom" (click)="dismissDialogMessage()" >Cancel</button>
+          </div>
         </div>
     </form>
 </div>

@@ -10,19 +10,19 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
 
   id: string;
-  items = [
-    ["item1", "item2"],
-    ["item3", "item4"]
-  ];
+  pizzas = [["Sm Pizza", " $6"], ["Md Pizza", " $8"], ["Lg Pizza", " $10"]];
+  sides = [["Garlic Bread", " $4"], ["Sm Sub", " $6"], ["Lg Sub", " $8"]];
+  drinks = [["Mnt dew", " $2"], ["Coke", " $2"], ["Sunkist", " $2"], ["Sprite", " $2"]];
   addItem = false;
   contextmenu = false;
   contextmenuX = 0;
   contextmenuY = 0;
   name: string;
   price: string;
+  itemType: string;
   itemDetails = [];
-
-
+  count: number = 0;
+  index: number;
 
   constructor(private router: Router,public authService: AuthService) { }
 
@@ -30,25 +30,42 @@ export class DashboardComponent implements OnInit {
     this.id = localStorage.getItem('token');
   }
 
-  receiveMessage($event) {
+  receiveMessage($event: any) {
+    this.count++;
     this.itemDetails.push($event);
     this.name = this.itemDetails[0];
     this.price = this.itemDetails[1];
+    this.itemType = this.itemDetails[2];
+    
+    if ($event === 'dismiss') {
+      this.closeAddItemDialog();
+      this.clearList();
+      return;
+    }
+
+    if (this.count === 3) {
+      this.count = 0;
+      this.addItems();
+      
+      this.clearList();
+    }
+    this.closeAddItemDialog()
   }
 
-  get getPrice() {
-    return this.price;
+  receiveMsgDelete($event: any) {
+    this.removeItems($event);
   }
 
-  public get getName() {
-    return this.name;
+  closeAddItemDialog() {
+    this.addItem = false
   }
 
   //activates the menu with the coordinates
-  onrightClick(event){
+  onrightClick(event, index: number){
     this.contextmenuX = event.clientX
     this.contextmenuY = event.clientY
     this.contextmenu = true;
+    this.index = index;
   }
 
   //disables the menu
@@ -62,15 +79,25 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  addItems(item) {
-    this.items.push(item)
+  addItems() {
+    if (this.price[0] != "$") {
+      this.price = "$" + this.price;
+    }
+    this.pizzas.push([this.name, " " + this.price]);
   }
 
-  removeItems(index: number) {
-    this.items.splice(index, 1)
+  removeItems(index: any) {
+    if (index === typeof String) {
+      index = +index;
+    }
+    this.pizzas.splice(index, 1)
   }
 
   showAddItemDialog() {
     this.addItem = true;
+  }
+
+  clearList() {
+    this.itemDetails.splice(0, this.itemDetails.length);
   }
 }

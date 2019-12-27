@@ -1,3 +1,5 @@
 .contextmenu{
     position: absolute;
+    background-color: white;
+    border: grey 1px solid;
 }

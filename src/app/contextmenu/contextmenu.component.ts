@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-contextmenu',
@@ -9,8 +9,14 @@ export class ContextmenuComponent{
 
   constructor() { }
 
+  @Output() messageEvent = new EventEmitter<string>();
 
-  @Input() x=0;
-  @Input() y=0;
+  @Input() x = 0;
+  @Input() y = 0;
+  @Input() index: number;
+  @Input() pizzas: [];
 
+  removeItem() {
+    this.messageEvent.emit(this.index.toString());
+  }
 }
