@@ -1,4 +1,22 @@
-.dialog {
+.formContainer {
     margin: auto;
-    width: 60%;
+    width: 25%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.formContainer label {
+    padding-right: 5px;
+}
+
+.inputCustom {
+    position: relative;
+    left: 19px;
+}
+
+.btn-custom {
+    position: relative;
+    top: 10px;
+    left: 100px;
 }

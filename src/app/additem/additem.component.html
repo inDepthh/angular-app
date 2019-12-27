@@ -1,6 +1,13 @@
-<div class="dialog">
+<div class="container">
     <form>
-        <label for="Item">Product</label>
-        <input name="product"/>
+        <div class="formContainer">
+          <label for="product">Product:</label>
+          <input name="product" (keyup)="addName($event)"/>
+          <br>
+          <label for="productPrice">Price:</label>
+          <input class="inputCustom" name="productPrice" (keyup)="addPrice($event)"/>
+          <br>
+          <button class="btn btn-success btn-custom" (click)="sendMessage()" >Add</button>
+        </div>
     </form>
 </div>

@@ -10,16 +10,38 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
 
   id: string;
-  items = ["item1", "item2"];
+  items = [
+    ["item1", "item2"],
+    ["item3", "item4"]
+  ];
   addItem = false;
   contextmenu = false;
   contextmenuX = 0;
   contextmenuY = 0;
+  name: string;
+  price: string;
+  itemDetails = [];
+
+
 
   constructor(private router: Router,public authService: AuthService) { }
 
   ngOnInit() {
     this.id = localStorage.getItem('token');
+  }
+
+  receiveMessage($event) {
+    this.itemDetails.push($event);
+    this.name = this.itemDetails[0];
+    this.price = this.itemDetails[1];
+  }
+
+  get getPrice() {
+    return this.price;
+  }
+
+  public get getName() {
+    return this.name;
   }
 
   //activates the menu with the coordinates

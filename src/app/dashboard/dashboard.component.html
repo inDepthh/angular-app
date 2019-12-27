@@ -13,11 +13,11 @@
     </div>
     <div>
       <ng-container *ngFor="let item of items; let i = index">
-        <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event)">{{ item }}</div>
+          <ng-container>{{ " " }}</ng-container>
+          <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event)">{{item}}</div>
       </ng-container>
     </div>
-    <app-additem *ngIf="addItem === true"></app-additem>
-</div>
+    <app-additem *ngIf="addItem === true" (messageEvent)="receiveMessage($event)"></app-additem>
+  </div>
 </div>
 
