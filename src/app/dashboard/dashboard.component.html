@@ -13,25 +13,25 @@
     </div>
     <div>
       <Label for="pizza"><strong>Pizzas: </strong></Label>
-      <ng-container name="pizza" *ngFor="let item of pizzas; let i = index">
+      <ng-container id="pizza" *ngFor="let item of pizzas; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event, i)">{{ item }}</div>
+        <div class="list" (click)='removeItems(i)' (contextmenu)="onRightClickPizza($event, i)">{{ item }}</div>
       </ng-container>
     </div>
     <br>
     <div>
       <Label class="sidesLabel" for="sides"><strong>Sides: </strong></Label>
-      <ng-container name="sides" *ngFor="let item of sides; let i = index">
+      <ng-container id="sides" *ngFor="let item of sides; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event, i)">{{ item }}</div>
+        <div class="list" (click)='removeItems(i)' (contextmenu)="onRightClickSide($event, i)">{{ item }}</div>
       </ng-container>
     </div>
     <br>
     <div>
       <Label class="drinksLabel" for="drinks"><strong>Drinks: </strong></Label>
-      <ng-container name="drinks" *ngFor="let item of drinks; let i = index">
+      <ng-container id="drinks" *ngFor="let item of drinks; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)' (contextmenu)="onrightClick($event, i)">{{ item }}</div>
+        <div class="list" (click)='removeItems(i)' (contextmenu)="onRightClickDrink($event, i)">{{ item }}</div>
       </ng-container>
     </div>
     <app-additem *ngIf="addItem === true" (messageEvent)="receiveMessage($event)"></app-additem>

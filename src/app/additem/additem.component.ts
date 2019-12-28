@@ -9,7 +9,7 @@ export class AdditemComponent implements OnInit {
 
   name: string;
   price: string;
-  itemTypes = ["Main", "Side", "Drink"]
+  itemTypes = ['Main', 'Side', 'Drink']
   itemType: string;
 
   @Output() messageEvent = new EventEmitter<string>();
@@ -19,11 +19,11 @@ export class AdditemComponent implements OnInit {
   ngOnInit() { }
 
   addName(event: any) {
-    this.name = event;
+    this.name = event.target.value;
   }
 
   addPrice(event: any) {
-    this.price = event;
+    this.price = event.target.value;
   }
 
   changeListType(event: any) {
@@ -36,11 +36,11 @@ export class AdditemComponent implements OnInit {
       this.messageEvent.emit(this.price)
       this.messageEvent.emit(this.itemType);
     } else {
-      alert("Error: All Fields are Required");
+      alert('Error: All Fields are Required');
     }
   }
 
   dismissDialogMessage() {
-    this.messageEvent.emit("dismiss");
+    this.messageEvent.emit('dismiss');
   }
 }

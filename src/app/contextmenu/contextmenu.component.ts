@@ -14,7 +14,6 @@ export class ContextmenuComponent{
   @Input() x = 0;
   @Input() y = 0;
   @Input() index: number;
-  @Input() pizzas: [];
 
   removeItem() {
     this.messageEvent.emit(this.index.toString());

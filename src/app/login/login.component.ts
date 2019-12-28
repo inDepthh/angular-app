@@ -11,13 +11,13 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  model: ILogin = { userid: "admin"};
+  model: ILogin = { userid: 'admin'};
   loginForm: FormGroup;
   message: string;
   returnUrl: string;
   prefil: string;
 
-  constructor(private formBuilder: FormBuilder,private router: Router, public authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, public authService: AuthService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     });
     this.returnUrl = '/dashboard';
     this.authService.logout();
-    this.prefil = "admin";
+    this.prefil = 'admin';
   }
 
   // convenience getter for easy access to form fields
@@ -34,21 +34,19 @@ export class LoginComponent implements OnInit {
   login() {
     // stop here if form is invalid
     if (this.loginForm.invalid) {
-      console.log("login invalid");
+      console.log('login invalid');
       return;
-    }
-    else { 
-      if (this.f.userid.value == this.model.userid) {
-        console.log("Login successful");
+    } else {
+      if (this.f.userid.value === this.model.userid) {
+        console.log('Login successful');
         // this.authService.authLogin(this.model);
-        localStorage.setItem('isLoggedIn', "true");
+        localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('token', this.f.userid.value);
         this.router.navigate([this.returnUrl]);
+      } else {
+            this.message = 'Please check your userid';
       }
-      else {0
-        this.message = "Please check your userid";
-      }
-    }    
+    }
   }
 }
 

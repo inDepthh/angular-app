@@ -1,21 +1,21 @@
 <div class="container">
-    <form>
-        <div class="formContainer">
-          <label for="product">Product:</label>
-          <input type="text" name="product" (keyup)="addName($event.target.value)"/>
-          <br>
-          <label for="productPrice">Price:</label>
-          <input type="text" class="inputCustom" name="productPrice" (keyup)="addPrice($event.target.value)"/>
-          <br>
-          <select ng-model="selectedName" (change)="changeListType($event)">
-            <option value="" disabled>Choose product type</option>
-            <option *ngFor="let itemType of itemTypes" [ngValue]="itemType">{{ itemType }}</option>
-          </select>
-          
-          <div class="btn-container">
-            <button class="btn btn-success btn-custom" (click)="sendMessage()" >Add</button>
-            <button class="btn btn-danger btn-custom" (click)="dismissDialogMessage()" >Cancel</button>
-          </div>
-        </div>
-    </form>
+  <form>
+    <div class="formContainer">
+      <label for="product">Product:</label>
+      <input type="text" id="product" (keyup)="addName($event)"/>
+      <br>
+      <label for="productPrice">Price:</label>
+      <input type="text" class="inputCustom" id="productPrice" (keyup)="addPrice($event)"/>
+      <br><br>
+      <select class="dropdown" ng-model="selectedName" (change)="changeListType($event)">
+        <option value="" disabled>Choose product type</option>
+        <option *ngFor="let itemType of itemTypes" [ngValue]="itemType">{{ itemType }}</option>
+      </select>
+
+      <div class="btn-container">
+        <button class="btn btn-success btn-custom" (click)="sendMessage()" >Add</button>
+        <button class="btn btn-danger btn-custom" (click)="dismissDialogMessage()" >Cancel</button>
+      </div>
+    </div>
+  </form>
 </div>

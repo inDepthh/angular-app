@@ -6,10 +6,8 @@ body {
 }
 
 .loginBox {
-    margin: auto;
-    width: 60%;
     background: #FFF;
-    margin-top: 20px;
+    margin-top: 150px;
     padding: 20px 15px;
     border: #EEE 1px solid;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14);
