@@ -9,10 +9,11 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  id: string;
   pizzas = [['Sm Pizza', ' $6'], ['Md Pizza', ' $8'], ['Lg Pizza', ' $10']];
   sides = [['Garlic Bread', ' $4'], ['Sm Sub', ' $6'], ['Lg Sub', ' $8']];
   drinks = [['Mnt dew', ' $2'], ['Coke', ' $2'], ['Sunkist', ' $2'], ['Sprite', ' $2']];
+  id: string;
+  checkouts = [];
   addItem = false;
   contextmenu = false;
   contextmenuX = 0;
@@ -26,11 +27,33 @@ export class DashboardComponent implements OnInit {
   pizza: boolean;
   side: boolean;
   drink: boolean;
+  checkout: boolean;
+  total = 0;
+  prices = 0;
+  currentIndex;
 
   constructor(private router: Router, public authService: AuthService) { }
 
   ngOnInit() {
     this.id = localStorage.getItem('token');
+  }
+
+  totalPrice(remove, index) {
+    let tempPrice = '0';
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.checkouts.length; ++i) {
+      tempPrice = this.checkouts[i][1].toString();
+      tempPrice = tempPrice.slice(2, tempPrice.length);
+      this.prices = +tempPrice;
+    }
+
+    if (!remove) {
+      this.total += this.prices;
+    } else {
+      this.currentIndex = this.checkouts[+index][1];
+      this.total -= +this.currentIndex.slice(2, this.currentIndex.length);
+    }
   }
 
   receiveMessage($event: any) {
@@ -55,7 +78,13 @@ export class DashboardComponent implements OnInit {
   }
 
   receiveMsgDelete($event: any) {
+    this.totalPrice(true, $event);
     this.removeItems($event);
+  }
+
+  addToCheckout(array: any) {
+    this.checkouts.push(array);
+    this.totalPrice(false, null);
   }
 
   closeAddItemDialog() {
@@ -75,6 +104,11 @@ export class DashboardComponent implements OnInit {
   onRightClickDrink(event, index: number) {
     this.onrightClick(event, index);
     this.drink = true;
+  }
+
+  onRightClickCheckout(event, index: number) {
+    this.onrightClick(event, index);
+    this.checkout = true;
   }
 
   // activates the menu with the coordinates
@@ -124,6 +158,9 @@ export class DashboardComponent implements OnInit {
     } else if (this.drink) {
       this.drinks.splice(index, 1);
       this.drink = false;
+    } else if (this.checkout) {
+      this.checkouts.splice(index, 1);
+      this.checkout = false;
     }
   }
 

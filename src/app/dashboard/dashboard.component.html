@@ -3,7 +3,6 @@
     <div class="info">
       <p><strong>User: admin</strong></p>
       <button class="btn btn-danger" (click)="logout()">Logout</button>
-      <button class="btn btn-danger" (click)="removeItems()">Remove Item</button>
       <button class="btn btn-success" (click)="showAddItemDialog()">Add Item</button>
       <br><br>
     </div>
@@ -11,29 +10,38 @@
     <div *ngIf="contextmenu">
       <app-contextmenu [x]="contextmenuX" [y]="contextmenuY" [index]="index" (messageEvent)="receiveMsgDelete($event)"></app-contextmenu>
     </div>
-    <div>
-      <Label for="pizza"><strong>Pizzas: </strong></Label>
+    <div class="pizzaContainer">
+      <Label class="pizzasLabel" for="pizza"><strong>Pizzas: </strong></Label>
       <ng-container id="pizza" *ngFor="let item of pizzas; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)' (contextmenu)="onRightClickPizza($event, i)">{{ item }}</div>
+        <div class="list" id="pizzaContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickPizza($event, i)">{{ item }}</div>
       </ng-container>
     </div>
     <br>
-    <div>
+    <div class="sideContainer">
       <Label class="sidesLabel" for="sides"><strong>Sides: </strong></Label>
       <ng-container id="sides" *ngFor="let item of sides; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)' (contextmenu)="onRightClickSide($event, i)">{{ item }}</div>
+        <div class="list" id="sideContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickSide($event, i)">{{ item }}</div>
       </ng-container>
     </div>
     <br>
-    <div>
+    <div class="drinkContainer">
       <Label class="drinksLabel" for="drinks"><strong>Drinks: </strong></Label>
       <ng-container id="drinks" *ngFor="let item of drinks; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" (click)='removeItems(i)' (contextmenu)="onRightClickDrink($event, i)">{{ item }}</div>
+        <div class="list" id="drinkContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickDrink($event, i)">{{ item }}</div>
       </ng-container>
     </div>
+    <br><br><br><br>
+    <div class="checkout">
+      <Label class="checkoutLabel" for="checkout"><strong>Checkout: </strong></Label>
+      <ng-container id="checkout" *ngFor="let item of checkouts; let i = index">
+        <div id="checkoutContainer" (contextmenu)="onRightClickCheckout($event, i)">{{ item }}</div>
+      </ng-container>
+    </div>
+    <strong><p> Total: {{ "$" + total }}</p></strong>
+    <button class="btn btn-primary">Checkout</button>
     <app-additem *ngIf="addItem === true" (messageEvent)="receiveMessage($event)"></app-additem>
   </div>
 </div>

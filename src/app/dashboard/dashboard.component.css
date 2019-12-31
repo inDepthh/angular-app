@@ -1,11 +1,32 @@
 .list {
-    background-color: white;
+    color: white;
     width: 150px;
     height: 40px;
     border-radius: 10px;
     text-align: center;
     padding: 8px;
     display: inline-block;
+}
+
+#pizzaContainer {
+  background-color: green;
+}
+
+
+#sideContainer {
+  background-color: yellow;
+  color: black;
+}
+
+
+#drinkContainer {
+  background-color: orangered;
+}
+
+#checkoutContainer {
+  background-color: lightblue;
+  color: black;
+  font-weight: bold;
 }
 
 .info {
@@ -29,9 +50,13 @@ label {
 }
 
 .sidesLabel {
-    padding-right: 7px;
+    padding-right: 10px;
 }
 
 .drinksLabel {
     padding-right: 2px;
+}
+
+.pizzasLabel {
+    padding-right: 3px;
 }
