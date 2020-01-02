@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { DatabaseService } from '../database.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,13 +34,15 @@ export class DashboardComponent implements OnInit {
   prices = 0;
   currentIndex;
 
-  constructor(private router: Router, public authService: AuthService) { }
+  constructor(private router: Router, public authService: AuthService, 
+    public databaseService: DatabaseService, public http: HttpClient) { }
 
   ngOnInit() {
     this.id = localStorage.getItem('token');
+    this.databaseService.onFetch();
   }
 
-  totalPrice(remove, index) {
+  totalPrice(remove: boolean, index) {
     let tempPrice = '0';
 
     // tslint:disable-next-line:prefer-for-of
@@ -62,6 +66,8 @@ export class DashboardComponent implements OnInit {
     this.name = this.itemDetails[0];
     this.price = this.itemDetails[1];
     this.itemType = this.itemDetails[2];
+
+    // this.databaseService.dataReceiver(this.name, this.price, this.itemType);
 
     if ($event === 'dismiss') {
       this.closeAddItemDialog();
@@ -135,13 +141,17 @@ export class DashboardComponent implements OnInit {
       this.price = '$' + this.price;
     }
 
-    if (this.itemType === 'Main') {
+    if (this.itemType === 'Pizza') {
       this.pizzas.push([this.name, ' ' + this.price]);
+      this.index = this.pizzas.length;
     } else if (this.itemType === 'Side') {
       this.sides.push([this.name, ' ' + this.price]);
+      this.index = this.sides.length;
     } else if (this.itemType === 'Drink') {
+      this.index = this.drinks.length;
       this.drinks.push([this.name, ' ' + this.price]);
     }
+    this.databaseService.onCreatePost(this.name, this.price, this.itemType, this.index);
   }
 
   removeItems(index: any) {

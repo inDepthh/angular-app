@@ -9,7 +9,7 @@ export class AdditemComponent implements OnInit {
 
   name: string;
   price: string;
-  itemTypes = ['Main', 'Side', 'Drink']
+  itemTypes = ['Pizza', 'Side', 'Drink']
   itemType: string;
 
   @Output() messageEvent = new EventEmitter<string>();
