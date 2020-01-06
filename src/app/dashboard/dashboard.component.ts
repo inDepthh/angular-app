@@ -78,8 +78,10 @@ export class DashboardComponent implements OnInit {
   }
 
   receiveMsgDelete($event: any) {
-    this.totalPrice(true, $event);
     this.removeItems($event);
+    if (this.checkout === true) {
+      this.totalPrice(true, $event);
+    }
   }
 
   addToCheckout(array: any) {
