@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MenuStatus } from '../menu-status.enum';
+import { DatabaseService } from '../database.service';
 
 @Component({
   selector: 'app-contextmenu',
@@ -7,7 +9,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ContextmenuComponent{
 
-  constructor() { }
+  constructor(public databaseService: DatabaseService) { }
 
   @Output() messageEvent = new EventEmitter<string>();
 
@@ -15,7 +17,12 @@ export class ContextmenuComponent{
   @Input() y = 0;
   @Input() index: number;
 
-  removeItem() {
+  sendMessageEdit() {
+    this.databaseService.dataReciever(true);
+    this.messageEvent.emit(this.index.toString());
+  }
+
+  sendMessageDelete() {
     this.messageEvent.emit(this.index.toString());
   }
 }

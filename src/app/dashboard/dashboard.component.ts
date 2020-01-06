@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../database.service';
 import { HttpClient } from '@angular/common/http';
+import { MenuStatus } from '../menu-status.enum';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,60 +12,71 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DashboardComponent implements OnInit {
 
-  pizzas = [['Sm Pizza', ' $6'], ['Md Pizza', ' $8'], ['Lg Pizza', ' $10']];
-  sides = [['Garlic Bread', ' $4'], ['Sm Sub', ' $6'], ['Lg Sub', ' $8']];
-  drinks = [['Mnt dew', ' $2'], ['Coke', ' $2'], ['Sunkist', ' $2'], ['Sprite', ' $2']];
+  // pizzas = [['Sm Pizza', ' $6'], ['Md Pizza', ' $8'], ['Lg Pizza', ' $10']];
+  // sides = [['Garlic Bread', ' $4'], ['Sm Sub', ' $6'], ['Lg Sub', ' $8']];
+  // drinks = [['Mnt dew', ' $2'], ['Coke', ' $2'], ['Sunkist', ' $2'], ['Sprite', ' $2']];
+  pizzas;
+  sides;
+  drinks;
   id: string;
   checkouts = [];
   addItem = false;
   contextmenu = false;
   contextmenuX = 0;
   contextmenuY = 0;
-  name: string;
-  price: string;
   itemType: string;
-  itemDetails = [];
-  count = 0;
   index: number;
-  pizza: boolean;
-  side: boolean;
-  drink: boolean;
-  checkout: boolean;
+  deleteCheckout: boolean;
   total = 0;
-  prices = 0;
-  currentIndex;
+  count = 0;
+  name;
+  price;
+  itemDetails = [];
+
 
   constructor(private router: Router, public authService: AuthService, 
     public databaseService: DatabaseService, public http: HttpClient) { }
 
   ngOnInit() {
     this.id = localStorage.getItem('token');
+    this.fetchData();
+  }
+
+  fetchData() {
     this.databaseService.onFetch();
+
+    setTimeout(() => {
+      this.pizzas = this.databaseService.getPizzaReponse();
+      this.sides = this.databaseService.getsideReponse();
+      this.drinks = this.databaseService.getdrinkReponse();
+    }, 150);
   }
 
   totalPrice(remove: boolean, index) {
     let tempPrice = '0';
-
+    let price = 0;
+  
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.checkouts.length; ++i) {
       tempPrice = this.checkouts[i][1].toString();
       tempPrice = tempPrice.slice(2, tempPrice.length);
-      this.prices = +tempPrice;
+      price = +tempPrice;
     }
 
     if (!remove) {
-      this.total += this.prices;
+      this.total += price;
     } else {
-      this.currentIndex = this.checkouts[+index][1];
-      this.total -= +this.currentIndex.slice(2, this.currentIndex.length);
+      let currentIndex = this.checkouts[+index][1];
+      this.total -= +currentIndex.slice(2, currentIndex.length);
     }
   }
 
   receiveMessage($event: any) {
-    this.count++;
+    this.count++
     this.itemDetails.push($event);
     this.name = this.itemDetails[0];
     this.price = this.itemDetails[1];
+    console.log(this.price);
     this.itemType = this.itemDetails[2];
 
     // this.databaseService.dataReceiver(this.name, this.price, this.itemType);
@@ -83,10 +95,17 @@ export class DashboardComponent implements OnInit {
     this.closeAddItemDialog();
   }
 
-  receiveMsgDelete($event: any) {
-    this.removeItems($event);
-    if (this.checkout === true) {
+  receiveMsgContextMenu($event: any) {
+
+    if (this.databaseService.getEditStatus()) {
+      console.log("Edit was pressed");
+      this.databaseService.dataReciever(false)
+      this.addItem = true;
+      // this.databaseService.onUpdate(this.itemType, $event);
+    } else {
       this.totalPrice(true, $event);
+      //this.removeItems($event);
+      console.log("Delete was pressed");
     }
   }
 
@@ -101,22 +120,24 @@ export class DashboardComponent implements OnInit {
 
   onRightClickPizza(event, index: number) {
     this.onrightClick(event, index);
-    this.pizza = true;
+    this.itemType = "Pizza";
   }
 
   onRightClickSide(event, index: number) {
     this.onrightClick(event, index);
-    this.side = true;
+    this.itemType = "Side";
   }
 
   onRightClickDrink(event, index: number) {
     this.onrightClick(event, index);
-    this.drink = true;
+    this.itemType = "Drink";
   }
 
   onRightClickCheckout(event, index: number) {
     this.onrightClick(event, index);
-    this.checkout = true;
+    // this.delete = true;
+    MenuStatus.CheckoutDelete;
+    console.log(MenuStatus);
   }
 
   // activates the menu with the coordinates
@@ -139,21 +160,23 @@ export class DashboardComponent implements OnInit {
   }
 
   addItems() {
+    console.log(this.price);
     if (this.price[0] !== '$') {
       this.price = '$' + this.price;
     }
 
     if (this.itemType === 'Pizza') {
-      this.pizzas.push([this.name, ' ' + this.price]);
       this.index = this.pizzas.length;
     } else if (this.itemType === 'Side') {
-      this.sides.push([this.name, ' ' + this.price]);
       this.index = this.sides.length;
     } else if (this.itemType === 'Drink') {
       this.index = this.drinks.length;
-      this.drinks.push([this.name, ' ' + this.price]);
     }
     this.databaseService.onCreatePost(this.name, this.price, this.itemType, this.index);
+
+    setTimeout(() => {
+      this.fetchData();
+    }, 100);
   }
 
   removeItems(index: any) {
@@ -161,19 +184,15 @@ export class DashboardComponent implements OnInit {
       index = +index;
     }
 
-    if (this.pizza) {
-      this.pizzas.splice(index, 1);
-      this.pizza = false;
-    } else if (this.side) {
-      this.sides.splice(index, 1);
-      this.side = false;
-    } else if (this.drink) {
-      this.drinks.splice(index, 1);
-      this.drink = false;
-    } else if (this.checkout) {
+    if (this.deleteCheckout) {
       this.checkouts.splice(index, 1);
-      this.checkout = false;
+      this.deleteCheckout = false;
     }
+    this.databaseService.onDelete(index, this.itemType)
+
+    setTimeout(() => {
+      this.fetchData();
+    }, 100);
   }
 
   showAddItemDialog() {
@@ -181,6 +200,6 @@ export class DashboardComponent implements OnInit {
   }
 
   clearList() {
-    this.itemDetails.splice(0, this.itemDetails.length);
+   this.itemDetails.splice(0, this.itemDetails.length);
   }
 }

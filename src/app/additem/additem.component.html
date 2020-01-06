@@ -13,7 +13,7 @@
       </select>
 
       <div class="btn-container">
-        <button class="btn btn-success btn-custom" (click)="sendMessage()" >Add</button>
+        <button class="btn btn-success btn-custom" (click)="sendMessage($event)" [innerHTML]="some">Add</button>
         <button class="btn btn-danger btn-custom" (click)="dismissDialogMessage()" >Cancel</button>
       </div>
     </div>

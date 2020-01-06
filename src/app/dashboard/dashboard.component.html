@@ -8,13 +8,13 @@
     </div>
     <br><br>
     <div *ngIf="contextmenu">
-      <app-contextmenu [x]="contextmenuX" [y]="contextmenuY" [index]="index" (messageEvent)="receiveMsgDelete($event)"></app-contextmenu>
+      <app-contextmenu [x]="contextmenuX" [y]="contextmenuY" [index]="index" (messageEvent)="receiveMsgContextMenu($event)"></app-contextmenu>
     </div>
     <div class="pizzaContainer">
       <Label class="pizzasLabel" for="pizza"><strong>Pizzas: </strong></Label>
       <ng-container id="pizza" *ngFor="let item of pizzas; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" id="pizzaContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickPizza($event, i)">{{ item }}</div>
+        <div class="list" id="pizzaContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickPizza($event, i)">{{ item.product }}</div>
       </ng-container>
     </div>
     <br>
@@ -22,7 +22,7 @@
       <Label class="sidesLabel" for="sides"><strong>Sides: </strong></Label>
       <ng-container id="sides" *ngFor="let item of sides; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" id="sideContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickSide($event, i)">{{ item }}</div>
+        <div class="list" id="sideContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickSide($event, i)">{{ item.product }}</div>
       </ng-container>
     </div>
     <br>
@@ -30,7 +30,7 @@
       <Label class="drinksLabel" for="drinks"><strong>Drinks: </strong></Label>
       <ng-container id="drinks" *ngFor="let item of drinks; let i = index">
         <ng-container>{{ " " }}</ng-container>
-        <div class="list" id="drinkContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickDrink($event, i)">{{ item }}</div>
+        <div class="list" id="drinkContainer" (click)="addToCheckout(item)" (contextmenu)="onRightClickDrink($event, i)">{{ item.product }}</div>
       </ng-container>
     </div>
     <br><br><br><br>

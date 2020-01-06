@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { DatabaseService } from '../database.service';
+
 
 @Component({
   selector: 'app-additem',
@@ -14,7 +16,7 @@ export class AdditemComponent implements OnInit {
 
   @Output() messageEvent = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(public databaseService: DatabaseService) { }
 
   ngOnInit() { }
 
@@ -30,7 +32,11 @@ export class AdditemComponent implements OnInit {
     this.itemType = event.target.value;
   }
 
-  sendMessage() {
+  sendMessage(event: any) {
+    if (this.databaseService.getEditStatus) {
+      console.log("called edit");
+    }
+
     if (this.name != null && this.price != null && this.itemType != null) {
       this.messageEvent.emit(this.name)
       this.messageEvent.emit(this.price)
