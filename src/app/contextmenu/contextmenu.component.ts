@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MenuStatus } from '../menu-status.enum';
 import { DatabaseService } from '../database.service';
 
 @Component({
@@ -16,9 +15,10 @@ export class ContextmenuComponent{
   @Input() x = 0;
   @Input() y = 0;
   @Input() index: number;
+  @Input() checkout: boolean;
 
   sendMessageEdit() {
-    this.databaseService.dataReciever(true);
+    this.databaseService.setEditStatus(true);
     this.messageEvent.emit(this.index.toString());
   }
 

@@ -11,11 +11,29 @@ export class DatabaseService {
   pizzaResponse;
   sideResponse;
   drinkResponse;
-  editStatus;
+  editStatus = false;
+  index: number;
+  itemType: string;
 
   constructor(private http: HttpClient) { }
 
-  dataReciever(edit) {
+  setItemType(itemType) {
+    this.itemType = itemType;
+  }
+
+  setIndex(index) {
+    this.index = index;
+  }
+
+  getItemType() {
+    return this.itemType;
+  }
+
+  getIndex() {
+    return this.index;
+  }
+
+  setEditStatus(edit: boolean) {
     this.editStatus = edit;
   }
 
@@ -23,15 +41,15 @@ export class DatabaseService {
     return this.editStatus;
   }
 
-  getPizzaReponse() {
+  getPizzaResponse() {
     return this.pizzaResponse;
   }
 
-  getsideReponse() {
+  getSideResponse() {
     return this.sideResponse;
   }
 
-  getdrinkReponse() {
+  getDrinkResponse() {
     return this.drinkResponse;
   }
 
@@ -86,8 +104,13 @@ export class DatabaseService {
     });
   }
 
-  onUpdate(productType, index) {
-    this.http.put(this.URL(productType), { id: index } ).subscribe(response => {
+  onUpdate(index, productType, product, productPrice) {
+
+    if (productPrice[0] !== '$') {
+      productPrice = ' $' + productPrice;
+    }
+
+    this.http.put(this.URL(productType), { id: index, product: product, price: productPrice } ).subscribe(response => {
       console.log(response);
     });
   }

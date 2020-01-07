@@ -7,14 +7,14 @@
       <label for="productPrice">Price:</label>
       <input type="text" class="inputCustom" id="productPrice" (keyup)="addPrice($event)"/>
       <br><br>
-      <select class="dropdown" ng-model="selectedName" (change)="changeListType($event)">
+      <select *ngIf="!this.databaseService.getEditStatus()" class="dropdown" ng-model="selectedName" (change)="changeListType($event)">
         <option value="" disabled>Choose product type</option>
         <option *ngFor="let itemType of itemTypes" [ngValue]="itemType">{{ itemType }}</option>
       </select>
 
       <div class="btn-container">
-        <button class="btn btn-success btn-custom" (click)="sendMessage($event)" [innerHTML]="some">Add</button>
-        <button class="btn btn-danger btn-custom" (click)="dismissDialogMessage()" >Cancel</button>
+        <button class="btn btn-success btn-custom" (click)="sendMessage($event)" [innerHTML]="getText()">Add</button>
+        <button class="btn btn-danger btn-custom" (click)="dismissDialogMessage()">Cancel</button>
       </div>
     </div>
   </form>

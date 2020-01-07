@@ -1,5 +1,5 @@
 <div class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}">
-  <button class="btn-primary" (click)="sendMessageEdit()">Edit</button>
-  <br>
+  <button *ngIf="!checkout" class="btn-primary" (click)="sendMessageEdit()">Edit</button>
+  <br *ngIf="!checkout">
   <button class="btn-danger" (click)="sendMessageDelete()">Delete</button>
 </div>

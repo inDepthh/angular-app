@@ -3,12 +3,13 @@
     <div class="info">
       <p><strong>User: admin</strong></p>
       <button class="btn btn-danger" (click)="logout()">Logout</button>
+      <button class="btn btn-success" (click)="fetchData()">Update</button>
       <button class="btn btn-success" (click)="showAddItemDialog()">Add Item</button>
       <br><br>
     </div>
     <br><br>
     <div *ngIf="contextmenu">
-      <app-contextmenu [x]="contextmenuX" [y]="contextmenuY" [index]="index" (messageEvent)="receiveMsgContextMenu($event)"></app-contextmenu>
+      <app-contextmenu [x]="contextmenuX" [y]="contextmenuY" [index]="index" [checkout]="checkoutDelete" (messageEvent)="receiveMsgContextMenu($event)"></app-contextmenu>
     </div>
     <div class="pizzaContainer">
       <Label class="pizzasLabel" for="pizza"><strong>Pizzas: </strong></Label>

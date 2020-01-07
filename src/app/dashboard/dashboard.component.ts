@@ -3,7 +3,8 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../database.service';
 import { HttpClient } from '@angular/common/http';
-import { MenuStatus } from '../menu-status.enum';
+import { timingSafeEqual } from 'crypto';
+import { ArrayType } from '@angular/compiler';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,13 +27,12 @@ export class DashboardComponent implements OnInit {
   contextmenuY = 0;
   itemType: string;
   index: number;
-  deleteCheckout: boolean;
   total = 0;
   count = 0;
   name;
   price;
   itemDetails = [];
-
+  checkoutDelete: boolean;
 
   constructor(private router: Router, public authService: AuthService, 
     public databaseService: DatabaseService, public http: HttpClient) { }
@@ -46,9 +46,9 @@ export class DashboardComponent implements OnInit {
     this.databaseService.onFetch();
 
     setTimeout(() => {
-      this.pizzas = this.databaseService.getPizzaReponse();
-      this.sides = this.databaseService.getsideReponse();
-      this.drinks = this.databaseService.getdrinkReponse();
+      this.pizzas = this.databaseService.getPizzaResponse();
+      this.sides = this.databaseService.getSideResponse();
+      this.drinks = this.databaseService.getDrinkResponse();
     }, 150);
   }
 
@@ -79,8 +79,6 @@ export class DashboardComponent implements OnInit {
     console.log(this.price);
     this.itemType = this.itemDetails[2];
 
-    // this.databaseService.dataReceiver(this.name, this.price, this.itemType);
-
     if ($event === 'dismiss') {
       this.closeAddItemDialog();
       this.clearList();
@@ -96,21 +94,52 @@ export class DashboardComponent implements OnInit {
   }
 
   receiveMsgContextMenu($event: any) {
-
     if (this.databaseService.getEditStatus()) {
       console.log("Edit was pressed");
-      this.databaseService.dataReciever(false)
       this.addItem = true;
-      // this.databaseService.onUpdate(this.itemType, $event);
-    } else {
+      this.databaseService.setIndex($event);
+      this.databaseService.setItemType(this.itemType);
+    } else if (this.checkoutDelete){
       this.totalPrice(true, $event);
-      //this.removeItems($event);
+      this.removeCheckoutItems($event);
       console.log("Delete was pressed");
+    } else {
+      this.onCheckoutDelete($event);
     }
   }
 
+  onCheckoutDelete(event: any) {
+    console.log("delete");
+      this.databaseService.onDelete(event, this.itemType);
+      setTimeout(() => {
+        this.fetchData();
+      }, 100);
+      
+    //   let value: number;
+    //   let next: number;
+    // for (let item of this.arrayType()) {
+    //   console.log(item.id)
+    //   value = item.id;
+    //   next = value + 1;
+    //   console.log(next);
+    //   if (value === next - 1) {
+    //     console.log("Error found. item id: " + value + " next item: " + next);
+    //   }
+    // }
+  }
+
+  arrayType() {
+      if (this.itemType === 'Pizza') {
+        return this.pizzas;
+      } else if (this.itemType === 'Side') {
+        return this.sides;
+      } else {
+        return this.drinks;
+      }
+  }
+
   addToCheckout(array: any) {
-    this.checkouts.push(array);
+    this.checkouts.push([array.product, array.price]);
     this.totalPrice(false, null);
   }
 
@@ -121,23 +150,24 @@ export class DashboardComponent implements OnInit {
   onRightClickPizza(event, index: number) {
     this.onrightClick(event, index);
     this.itemType = "Pizza";
+    this.checkoutDelete = false;
   }
 
   onRightClickSide(event, index: number) {
     this.onrightClick(event, index);
     this.itemType = "Side";
+    this.checkoutDelete = false;
   }
 
   onRightClickDrink(event, index: number) {
     this.onrightClick(event, index);
     this.itemType = "Drink";
+    this.checkoutDelete = false;
   }
 
   onRightClickCheckout(event, index: number) {
     this.onrightClick(event, index);
-    // this.delete = true;
-    MenuStatus.CheckoutDelete;
-    console.log(MenuStatus);
+    this.checkoutDelete = true;
   }
 
   // activates the menu with the coordinates
@@ -179,20 +209,15 @@ export class DashboardComponent implements OnInit {
     }, 100);
   }
 
-  removeItems(index: any) {
+  removeCheckoutItems(index: any) {
     if (index === typeof String) {
       index = +index;
     }
 
-    if (this.deleteCheckout) {
+    if (this.checkoutDelete) {
       this.checkouts.splice(index, 1);
-      this.deleteCheckout = false;
+      this.checkoutDelete = false;
     }
-    this.databaseService.onDelete(index, this.itemType)
-
-    setTimeout(() => {
-      this.fetchData();
-    }, 100);
   }
 
   showAddItemDialog() {
